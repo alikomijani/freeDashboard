@@ -1,12 +1,26 @@
-import { useState, useRef, createContext, useContext } from "react";
+import React, {
+  useState,
+  useRef,
+  createContext,
+  useContext,
+  ReactNode,
+} from "react";
 
-const HoverContext = createContext({
+const HoverContext = createContext<{
+  hover: boolean;
+  setHover: (input: boolean) => void;
+  rootRef: React.MutableRefObject<HTMLDivElement | null> | null;
+}>({
   hover: false,
   setHover: () => {},
   rootRef: null,
 });
 
-const Hover = ({ children }) => {
+type Props = {
+  children?: ReactNode;
+};
+
+const Hover = ({ children }: Props) => {
   const [hover, setHover] = useState(false);
   const rootRef = useRef(null);
   return (
@@ -28,7 +42,7 @@ const Hover = ({ children }) => {
   );
 };
 
-const HoverButton = ({ children }) => {
+const HoverButton = ({ children }: Props) => {
   const { setHover, rootRef } = useContext(HoverContext);
   return (
     <div
@@ -48,14 +62,14 @@ const HoverButton = ({ children }) => {
   );
 };
 
-const HoverMenu = ({ children }) => {
+const HoverMenu = ({ children }: Props) => {
   const { hover, rootRef } = useContext(HoverContext);
   return (
     <div
       style={{
         display: hover ? "block" : "none",
         position: "absolute",
-        top: rootRef.current?.offsetHeight ?? 0,
+        top: rootRef?.current?.offsetHeight ?? 0,
         left: 0,
         width: 300,
       }}
