@@ -1,8 +1,9 @@
-import React, { Suspense } from "react";
+import React, { Children, Suspense } from "react";
 import Layout from "Components/MainLayout/Main";
 import { createBrowserRouter } from "react-router-dom";
 const Table = React.lazy(() => import("Pages/Table/Table"));
 const Dashboard = React.lazy(() => import("Pages/Dashboard/Dashboard"));
+const Login = React.lazy(() => import("Pages/Loign/Login"));
 
 const DashboardRoutes = createBrowserRouter([
   {
@@ -22,6 +23,19 @@ const DashboardRoutes = createBrowserRouter([
         element: (
           <Suspense fallback={<div>Loading...</div>}>
             <Table />
+          </Suspense>
+        ),
+      },
+    ],
+  },
+  {
+    path: "/",
+    children: [
+      {
+        path: "/login",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Login />
           </Suspense>
         ),
       },
