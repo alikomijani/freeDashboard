@@ -1,9 +1,10 @@
 import React, { Suspense } from "react";
 import Layout from "Components/MainLayout/Main";
 import { createBrowserRouter } from "react-router-dom";
+import AuthProvider from "Components/AuthProvider/AuthProvider";
 const Table = React.lazy(() => import("Pages/Table/Table"));
 const Dashboard = React.lazy(() => import("Pages/Dashboard/Dashboard"));
-const Login = React.lazy(() => import("Pages/Loign/Login"));
+const Login = React.lazy(() => import("Pages/Login/Login"));
 
 const DashboardRoutes = createBrowserRouter([
   {
@@ -14,7 +15,9 @@ const DashboardRoutes = createBrowserRouter([
         index: true,
         element: (
           <Suspense fallback={<div>Loading...</div>}>
-            <Dashboard />
+            <AuthProvider>
+              <Dashboard />
+            </AuthProvider>
           </Suspense>
         ),
       },
@@ -22,7 +25,9 @@ const DashboardRoutes = createBrowserRouter([
         path: "/table",
         element: (
           <Suspense fallback={<div>Loading...</div>}>
-            <Table />
+            <AuthProvider>
+              <Table />
+            </AuthProvider>
           </Suspense>
         ),
       },

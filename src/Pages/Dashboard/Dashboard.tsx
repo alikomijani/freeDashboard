@@ -1,36 +1,40 @@
-import { Box, Button, Card, CardContent } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Card, CardContent, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import api from "api/api";
-import { useTheme } from "@mui/material/styles";
 
-import React, { useEffect, useState } from "react";
-import SuccessButton from "Components/SuccessButton/SuccessButton";
-import CustomFrom from "Components/CustomForm/CustomFrom";
+interface UserInfo {
+  first_name: string;
+  last_name: string;
+  email: string;
+  company: string;
+}
 type Props = {};
 
 const Dashboard = (props: Props) => {
-  const [posts, setPosts] = useState([]);
+  const [userInfo, setUserInfo] = useState<UserInfo>({
+    first_name: "",
+    last_name: "",
+    email: "",
+    company: "",
+  });
   useEffect(() => {
-    api
-      .get("/posts")
-      .then((res: any) => {
-        setPosts(res.data.posts);
-      })
-      .catch((e) => {});
+    api.get("auth/user/info/").then((res) => {
+      setUserInfo(res.data);
+    });
   }, []);
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} md={8} lg={4}>
+      <Grid item xs={12}>
         <Card variant="elevation">
-          <CardContent></CardContent>
+          <CardContent>
+            <Typography>first Name :{userInfo.first_name}</Typography>
+            <Typography> last Name :{userInfo.last_name}</Typography>
+            <Typography>email :{userInfo.email}</Typography>
+            <Typography>company :{userInfo.company}</Typography>
+          </CardContent>
         </Card>
       </Grid>
-
-      {posts.map((post: { id: number; title: string; body: string }) => (
-        <Grid key={post.id} item xs={12}>
-          {post.title}
-        </Grid>
-      ))}
     </Grid>
   );
 };

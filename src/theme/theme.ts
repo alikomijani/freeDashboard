@@ -31,12 +31,6 @@ const getDesignTokens = (mode: PaletteMode) =>
     },
     palette: {
       mode,
-      primary: {
-        ...amber,
-        ...(mode === "dark" && {
-          main: green[300],
-        }),
-      },
       ...(mode === "dark" && {
         background: {
           default: grey[700],

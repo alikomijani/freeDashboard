@@ -2,10 +2,12 @@ import { Box, Button, TextField } from "@mui/material";
 import React from "react";
 import api from "api/api";
 import { useNavigate } from "react-router-dom";
+import Storage from "service/Storage";
 type Props = {};
 
 const Login = (props: Props) => {
   const navigate = useNavigate();
+  const st = Storage();
   const [state, setState] = React.useState({
     email: "",
     password: "",
@@ -13,16 +15,13 @@ const Login = (props: Props) => {
   const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     api
-      .post("/auth/login", state)
+      .post("/auth/login/", state)
       .then((res: any) => {
-        console.log(res);
-        api.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${res.data.access_token}`;
+        st.setLogin(res.data.refresh, res.data.access);
         navigate("/");
       })
       .catch((e) => {
-        alert(e.response.data.message);
+        console.log(e);
       });
   };
   return (

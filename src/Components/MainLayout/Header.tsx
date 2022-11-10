@@ -9,11 +9,15 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import Avatar from "@mui/material/Avatar";
 import PersonIcon from "@mui/icons-material/Person";
 import MenuIcon from "@mui/icons-material/Menu";
+import Storage from "service/Storage";
+import { useNavigate } from "react-router-dom";
 type Props = {
   setOpenDrawer: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Header = ({ setOpenDrawer }: Props) => {
+  const navigate = useNavigate();
+  const st = Storage();
   return (
     <AppBar
       position="fixed"
@@ -42,6 +46,7 @@ const Header = ({ setOpenDrawer }: Props) => {
             </Avatar>
           </IconButton>
           <IconButton
+            onClick={() => st.setAccessToken("dsfsdf")}
             sx={{
               color: "white",
               flexBasis: 25,
@@ -50,6 +55,10 @@ const Header = ({ setOpenDrawer }: Props) => {
             <NotificationsIcon />
           </IconButton>
           <IconButton
+            onClick={() => {
+              st.setLogout();
+              navigate("/login");
+            }}
             sx={{
               color: "white",
               flexBasis: 25,

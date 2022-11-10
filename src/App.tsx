@@ -16,7 +16,6 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <RouterProvider router={DashboardRoutes} />
-      <Button onClick={() => setDarkMode("dark")}>change mode</Button>
     </ThemeProvider>
   );
 }
