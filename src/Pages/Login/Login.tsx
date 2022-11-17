@@ -2,22 +2,38 @@ import { Box, Button, TextField } from "@mui/material";
 import React from "react";
 import api from "api/api";
 import { useNavigate } from "react-router-dom";
-import Storage from "service/Storage";
+import useStorage from "hooks/storage";
+import useTitle from "hooks/useTitle";
 type Props = {};
 
 const Login = (props: Props) => {
   const navigate = useNavigate();
-  const st = Storage();
+  const [authInfo, setAuthInfo] = useStorage<{
+    refreshToken: string;
+    accessToken: string;
+    isLogin: boolean;
+  }>("auth", {
+    refreshToken: "",
+    accessToken: "",
+    isLogin: false,
+  });
+  console.log(authInfo);
   const [state, setState] = React.useState({
     email: "",
     password: "",
   });
+  useTitle("صفحه لاگین");
+
   const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     api
       .post("/auth/login/", state)
       .then((res: any) => {
-        st.setLogin(res.data.refresh, res.data.access);
+        setAuthInfo({
+          accessToken: res.data.access,
+          refreshToken: res.data.refresh,
+          isLogin: true,
+        });
         navigate("/");
       })
       .catch((e) => {
